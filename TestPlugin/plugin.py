@@ -6,11 +6,11 @@ from PyQt5.QtWidgets import QAction, QWidget
 from qgis.gui import QgisInterface
 
 from .core.layerloader import LayerLoader
-from .qgis_plugin_tools.tools.custom_logging import setup_logger
 from .qgis_plugin_tools.tools.i18n import setup_translation, tr
 from .qgis_plugin_tools.tools.resources import plugin_name
 from .qgis_plugin_tools.tools.custom_logging import setup_logger, bar_msg
 from .ui.testplugin_maindialog import TestPluginMainDialog
+from .utils import set_default_settings
 
 LOGGER = setup_logger(plugin_name())
 
@@ -22,6 +22,7 @@ class Plugin:
 
         self.iface = iface
         self.ui: Optional[TestPluginMainDialog] = None
+        set_default_settings()
 
         setup_logger(plugin_name(), iface)
 
