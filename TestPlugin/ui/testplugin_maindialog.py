@@ -1,3 +1,6 @@
+from pathlib import Path
+
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from qgis.gui import QgisInterface
 
@@ -13,6 +16,7 @@ class TestPluginMainDialog(QDialog, FORM_CLASS):
         self.is_initializing = True
 
         # setup superclass
+        # noinspection PyArgumentList
         super().__init__()
 
         # Set up the user interface from Designer.
@@ -24,6 +28,7 @@ class TestPluginMainDialog(QDialog, FORM_CLASS):
         self.iface = iface
 
         self.reset_ui()
+        self.__setup_connections()
         self.is_initializing = False
 
     def reset_ui(self):
@@ -34,3 +39,15 @@ class TestPluginMainDialog(QDialog, FORM_CLASS):
         # Set copies to 1
         self.spinbox_copies.setClearValue(1)
         self.spinbox_copies.clear()
+
+    def __setup_connections(self):
+        """Sets up connections from signals to slots."""
+        self.filewidget_input.fileChanged.connect(self.__on_filepath_changed)
+
+    @pyqtSlot()
+    def __on_filepath_changed(self):
+        """Validate input filepath on fileChanged signal."""
+        file_path = Path(self.filewidget_input.filePath())
+        if not file_path.exists():
+            raise Exception("File path does not exist")
+        print("File does exist")
