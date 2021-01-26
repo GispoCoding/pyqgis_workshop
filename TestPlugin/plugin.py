@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QAction, QWidget
 from qgis.gui import QgisInterface
 
+from .core.layerloader import LayerLoader
 from .qgis_plugin_tools.tools.custom_logging import setup_logger
 from .qgis_plugin_tools.tools.i18n import setup_translation, tr
 from .qgis_plugin_tools.tools.resources import plugin_name
@@ -131,3 +132,10 @@ class Plugin:
             self.ui = TestPluginMainDialog(self.iface)
 
         self.ui.show()
+
+        if self.ui.exec_():
+            print("ok clicked")
+            LayerLoader(self.ui).load_layers()
+
+        else:
+            print("cancel clicked")

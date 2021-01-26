@@ -1,4 +1,5 @@
 from pathlib import Path
+from types import SimpleNamespace
 
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog
@@ -51,3 +52,10 @@ class TestPluginMainDialog(QDialog, FORM_CLASS):
         if not file_path.exists():
             raise Exception("File path does not exist")
         print("File does exist")
+
+    def get_user_input(self) -> SimpleNamespace:
+        """Reads user input from ui and returns a settings SimpleNamespace"""
+        return SimpleNamespace(
+            filepath=Path(self.filewidget_input.filePath()),
+            copies=self.spinbox_copies.value(),
+        )
