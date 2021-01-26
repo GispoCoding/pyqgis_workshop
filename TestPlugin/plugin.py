@@ -8,6 +8,7 @@ from qgis.gui import QgisInterface
 from .qgis_plugin_tools.tools.custom_logging import setup_logger
 from .qgis_plugin_tools.tools.i18n import setup_translation, tr
 from .qgis_plugin_tools.tools.resources import plugin_name
+from .ui.testplugin_maindialog import TestPluginMainDialog
 
 
 class Plugin:
@@ -16,6 +17,7 @@ class Plugin:
     def __init__(self, iface: QgisInterface):
 
         self.iface = iface
+        self.ui: Optional[TestPluginMainDialog] = None
 
         setup_logger(plugin_name(), iface)
 
@@ -125,4 +127,7 @@ class Plugin:
 
     def run(self):
         """Run method that performs all the real work"""
-        print("Hello QGIS plugin")
+        if self.ui is None:
+            self.ui = TestPluginMainDialog(self.iface)
+
+        self.ui.show()
