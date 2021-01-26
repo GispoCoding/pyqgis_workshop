@@ -22,3 +22,15 @@ class TestPluginMainDialog(QDialog, FORM_CLASS):
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
         self.iface = iface
+
+        self.reset_ui()
+        self.is_initializing = False
+
+    def reset_ui(self):
+        """Sets UI to default state"""
+        # Set filepath to nothing
+        self.filewidget_input.setFilePath("")
+
+        # Set copies to 1
+        self.spinbox_copies.setClearValue(1)
+        self.spinbox_copies.clear()
