@@ -9,7 +9,10 @@ from .core.layerloader import LayerLoader
 from .qgis_plugin_tools.tools.custom_logging import setup_logger
 from .qgis_plugin_tools.tools.i18n import setup_translation, tr
 from .qgis_plugin_tools.tools.resources import plugin_name
+from .qgis_plugin_tools.tools.custom_logging import setup_logger, bar_msg
 from .ui.testplugin_maindialog import TestPluginMainDialog
+
+LOGGER = setup_logger(plugin_name())
 
 
 class Plugin:
@@ -134,8 +137,11 @@ class Plugin:
         self.ui.show()
 
         if self.ui.exec_():
-            print("ok clicked")
+            LOGGER.debug("ok clicked")
             LayerLoader(self.ui).load_layers()
+            LOGGER.info("Layers loaded", extra=bar_msg(details="Created some layers",
+                                                       duration=10,
+                                                       success=True))
 
         else:
-            print("cancel clicked")
+            LOGGER.debug("cancel clicked")

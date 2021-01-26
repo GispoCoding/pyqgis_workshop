@@ -6,8 +6,11 @@ from PyQt5.QtWidgets import QDialog
 from qgis.gui import QgisInterface
 
 from ..qgis_plugin_tools.tools.resources import load_ui
+from ..qgis_plugin_tools.tools.custom_logging import setup_logger, plugin_name
 
 FORM_CLASS = load_ui("testplugin_base.ui")
+
+LOGGER = setup_logger(plugin_name())
 
 
 class TestPluginMainDialog(QDialog, FORM_CLASS):
@@ -19,6 +22,7 @@ class TestPluginMainDialog(QDialog, FORM_CLASS):
         # setup superclass
         # noinspection PyArgumentList
         super().__init__()
+        setup_logger(plugin_name(), iface)
 
         # Set up the user interface from Designer.
         # After setupUI you can access any designer object by doing
@@ -51,7 +55,7 @@ class TestPluginMainDialog(QDialog, FORM_CLASS):
         file_path = Path(self.filewidget_input.filePath())
         if not file_path.exists():
             raise Exception("File path does not exist")
-        print("File does exist")
+        LOGGER.debug("File does exist")
 
     def get_user_input(self) -> SimpleNamespace:
         """Reads user input from ui and returns a settings SimpleNamespace"""
