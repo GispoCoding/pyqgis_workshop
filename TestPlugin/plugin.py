@@ -111,6 +111,8 @@ class Plugin:
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
+        # self.dockWidget.closingPlugin.disconnect(self.onClosePlugin)
+        # self.pluginIsActive = False
         pass
 
     def unload(self):
