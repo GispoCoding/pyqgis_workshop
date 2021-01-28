@@ -3,7 +3,7 @@
 ![](https://github.com/GispoCoding/testplugin/workflows/TestsLTR/badge.svg)
 [![codecov.io](https://codecov.io/github/GispoCoding/testplugin/coverage.svg?branch=master)](https://codecov.io/github/GispoCoding/testplugin?branch=master)
 ![](https://github.com/GispoCoding/testplugin/workflows/Release/badge.svg)
-
+![](https://github.com/GispoCoding/testplugin/workflows/Translations/badge.svg)
 
 ### Development
 
