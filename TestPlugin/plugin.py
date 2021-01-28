@@ -138,11 +138,12 @@ class Plugin:
         self.ui.show()
 
         if self.ui.exec_():
-            LOGGER.debug("ok clicked")
+            LOGGER.debug(tr("ok clicked"))
             LayerLoader(self.ui).load_layers()
-            LOGGER.info("Layers loaded", extra=bar_msg(details="Created some layers",
-                                                       duration=10,
-                                                       success=True))
+            LOGGER.info(tr("Layers loaded"), extra=bar_msg(
+                details=tr("Created some layers"),
+                duration=10,
+                success=True))
 
         else:
-            LOGGER.debug("cancel clicked")
+            LOGGER.debug(tr("cancel clicked"))

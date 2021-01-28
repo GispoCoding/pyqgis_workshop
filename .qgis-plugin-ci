@@ -1,5 +1,5 @@
 plugin_path: TestPlugin
-github_organization_slug: GispoCoding
-project_slug: testplugin
-transifex_coordinator: replace-me
-transifex_organization: replace-me
+github_organization_slug: mvaaltola
+project_slug: testing12345qgisplugin
+transifex_coordinator: mvaaltola
+transifex_organization: test-1245
