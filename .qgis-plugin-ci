@@ -1,5 +1,5 @@
 plugin_path: TestPlugin
 github_organization_slug: mvaaltola
-project_slug: test
+project_slug: pyqgis_workshop_plugin
 transifex_coordinator: mvaaltola
 transifex_organization: test-1245
