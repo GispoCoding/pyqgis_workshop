@@ -1,9 +1,9 @@
 # TestPlugin
-![](https://github.com/mvaaltola/pyqgis_workshop_plugin/workflows/Tests/badge.svg)
-![](https://github.com/mvaaltola/pyqgis_workshop_plugin/workflows/TestsLTR/badge.svg)
-[![codecov.io](https://codecov.io/github/mvaaltola/pyqgis_workshop_plugin/coverage.svg?branch=master)](https://codecov.io/github/mvaaltola/pyqgis_workshop_plugin?branch=master)
-![](https://github.com/mvaaltola/pyqgis_workshop_plugin/workflows/Release/badge.svg)
-![](https://github.com/mvaaltola/pyqgis_workshop_plugin/workflows/Translations/badge.svg)
+![](https://github.com/GispoCoding/pyqgis_workshop/workflows/Tests/badge.svg)
+![](https://github.com/GispoCoding/pyqgis_workshop/workflows/TestsLTR/badge.svg)
+[![codecov.io](https://codecov.io/github/GispoCoding/pyqgis_workshop/coverage.svg?branch=master)](https://codecov.io/github/GispoCoding/pyqgis_workshop?branch=master)
+![](https://github.com/GispoCoding/pyqgis_workshop/workflows/Release/badge.svg)
+![](https://github.com/GispoCoding/pyqgis_workshop/workflows/Translations/badge.svg)
 
 ### Development
 
