@@ -1,0 +1,131 @@
+---
+title: "PyQGIS Workshop - v2021.2 - Part 2"
+author: "Mikael Vaaltola - Gispo Ltd."
+date: "2021-02-21"
+output: html_document
+---
+
+# QGIS plugins
+
+## Tools
+
+QGIS plugins are written (mostly) in Python and are located at `<QGIS profile directory>/python/plugins. When doing development, never write code into this directory as you risk losing it by accident. Instead, write code somewhere else and use a helper tool such as a Makefile or [QGIS plugin tools](https://github.com/GispoCoding/qgis_plugin_tools).
+
+### QGIS plugin tools
+
+QGIS plugin tools is a set of handy tools and utilities for QGIS plugin development. It can be added to a QGIS plugin codebase as a Git submodule. For example, to easily set up a new plugin, run:
+
+```{sh, eval=FALSE}
+mkdir test-plugin-name
+cd test-plugin-name
+git init
+git remote add origin git@github.com:GispoCoding/test-plugin-name
+mkdir TestPlugin
+cd TestPlugin
+git submodule add https://github.com/GispoCoding/qgis_plugin_tools
+cp qgis_plugin_tools/infrastructure/creator.py .
+python creator.py -o GispoCoding -r test-plugin-name # Replace with your information
+rm creator.py
+```
+
+The sample plugin created by QGIS plugin tools provides a good base for starting plugin development. Take a look at the plugin tools repository readme to find out more.
+
+The plugin tools package also includes a "plugin builder" which can be used to build and copy files to the QGIS plugins directory. Create a build.py to the root of the project repo with the contents:
+
+```{python, eval=FALSE}
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import glob
+
+from qgis_plugin_tools.infrastructure.plugin_maker import PluginMaker
+
+'''
+#################################################
+# Edit the following to match the plugin
+#################################################
+'''
+
+locales = ['fi']
+profile = 'foo'  # QGIS profile name
+py_files = [fil for fil in glob.glob("**/*.py", recursive=True) if "test/" not in fil]
+ui_files = list(glob.glob("**/*.ui", recursive=True))
+resources = list(glob.glob("**/*.qrc", recursive=True))
+extra_dirs = ["resources", "logs"]
+compiled_resources = ["resources.py"]
+
+
+PluginMaker(py_files=py_files, ui_files=ui_files, resources=resources, extra_dirs=extra_dirs,
+            compiled_resources=compiled_resources, locales=locales, profile=profile)
+
+```
+Deploy the plugin with build script by running `python build.py deploy`.
+
+
+### Makefile
+
+You can also set up a Makefile with targets compile and deploy. This doesn't work too well on windows. An example:
+
+```{sh, eval=FALSE}
+compile: $(COMPILED_RESOURCE_FILES)
+
+%.py : %.qrc $(RESOURCES_SRC)
+	pyrcc5 -o $*.py  $<
+
+deploy: compile
+	@echo "Deploying plugin to your QGIS directory."
+	# The deploy  target only works on unix like operating system where
+	# the Python plugin directory is located at:
+	# $HOME/$(QGISDIR)/python/plugins
+	mkdir -p $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vf --parents $(PY_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vf --parents $(UI_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vf --parents $(COMPILED_RESOURCE_FILES) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vf --parents $(EXTRAS) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	cp -vfr i18n $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)
+	# cp -vfr $(HELP) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/help
+	# Copy extra directories if any
+	$(foreach EXTRA_DIR,$(EXTRA_DIRS), cp -R --parents $(EXTRA_DIR) $(HOME)/$(QGISDIR)/python/plugins/$(PLUGINNAME)/;)
+```
+
+## Main plugin object
+
+Take a look at the main plugin class at test-plugin-name/TestPlugin/. It should contain the following methods:
+
+- `__init__`: that sets up the plugin
+- `initGui`: adds the plugin to the QGIS GUI
+- `unload`: removes the plugin from the QGIS GUI
+- `run`: code that runs when the plugin is clicked in QGIS
+
+Out of these, only `run` could/should be renamed to something else (remember to change the callback argument to `add_action` in `initGui`).
+
+You don't need to change the others, and they shouldn't be renamed or removed as QGIS looks for them. The plugin object itself is loaded by the `classFactory` function inside `__init__.py`, another function that QGIS looks for.
+
+
+## PyQGIS API
+
+Plugins typically use PyQGIS and PyQt5 APIs. It can be worth taking a look not only at the Python-specific documentation but also the native QGIS and Qt5 API documentation for C++. The native documentation can sometimes be more extensive, and the Python bindings match these quite nicely.
+
+For example, using standard Python libraries, PyQt5, PyQGIS, and qgis_plugin_tools to create a vector layer from a file:
+
+```{python, eval=FALSE}
+from pathlib import Path
+
+from PyQt5.QtWidgets import QFileDialog
+
+from qgis.core import QgsVectorLayer
+
+from .qgis_plugin_tools.tools.i18n import tr
+from .qgis_plugin_tools.tools.custom_logging import setup_logger
+
+
+LOGGER = setup_logger("MyCoolPlugin")
+
+file_path = Path(QFileDialog.getOpenFileName(filter="*.shp")[0])
+vector_layer = QgsVectorLayer(str(file_path), "name of new layer")
+
+if not vector_layer.isValid():
+    raise ValueError(tr("Vector layer is invalid"))
+
+LOGGER.info(tr("Vector layer created successfully!"))
+
+```

@@ -1,0 +1,172 @@
+---
+title: "PyQGIS Workshop - v2021.2 - Part 1"
+author: "Mikael Vaaltola - Gispo Ltd."
+date: "2021-02-21"
+output: html_document
+---
+
+# Python basics
+
+## Types, structures
+
+For beginners to Python, pay special attention to indentations.
+
+```{python}
+
+# dynamically typed, so this is ok:
+
+i = 1
+i = 'string'
+i = ['list item 1', 2, True]
+
+print("lists are mutable. indexing starts at 0:", i)
+i[0] = False
+print(i)
+
+
+t = (1, 2, 3, 4)  # tuples are not mutable
+
+# errors are handled in the following way:
+try:
+    t[1] = 1
+except TypeError:
+    print("Trying to change tuples causes a TypeError")
+finally:
+    # you can also run some code after try-except finishes
+    pass
+
+a = t[0]
+
+# basic logical operators
+
+if a == 1:
+    print("t[0] is 1")
+elif a == 2:
+    print("t[0] is 2")
+else:
+    print("t[0] is something else")
+
+s = 'text'
+# loops and iteration:
+
+for character in s:
+    print(character)
+
+for idx, character in enumerate(s):
+    print(idx, character)
+
+i = 0
+while True:
+    print("this runs forever")
+    print(s)
+    i += 1
+    if i >= 2:
+        print(f"i value {i} >= 2, breaking")
+        break  # breaks loop
+
+
+# use pathlib to handle paths - it's generally better than os.path
+from pathlib import Path
+p = Path("/home/mikael/git")
+
+# fstrings are strings with f-prefix: f"text" and can contain variables
+# they are easy to use
+# also note: it's easy to split strings to multiple lines if they are
+# inside ( )
+
+print("\"fstrings\" are strings that can contain variables "
+      f"such as i={i}. you can also check if path p=Path({p}) exists "
+      f"inside an fstring by using p.exists(): {p.exists()}")
+
+d = {}  # dictionaries are commonly defined inside { }
+d = dict(k1=i, pth=p)  # or, a bit more uncommonly, like this
+print(d)
+del d
+
+# dictionaries store key-value pairs and are useful in many situations
+
+d = {
+    "key 1": "value 1",
+    2: 2,
+    "key 3": 3,
+    4: {
+        "a dict inside a dict": True,
+    },
+    5: ['lists', 'work', 'too']
+}
+
+for key in d:
+    print(f"key: {key}, value: {d[key]}")
+
+
+```
+
+## Functions, classes, methods
+
+```{python}
+
+# functions are defined like so:
+
+def function_name(param_1, param_2):
+    c = param_1 + param_2
+    return c
+
+# it's a *good idea* to add type definitions to your functions!
+# also pay attention to how you name your functions,
+# document your functions,
+# and follow naming conventions also with variables/parameters
+
+def underscore_to_space(text: str) -> str:
+    """ This function removes underscores from text
+    :param text: input text
+    :returns: text with underscores converted to spaces """
+
+    return text.replace("_", " ")
+
+
+# with PyQGIS you'll mostly work with classes
+# that contain methods and attributes:
+
+from qgis.gui import QgisInterface
+
+
+class Plugin:
+
+    # TODO: check init params
+    def __init__(self, iface: QgisInterface):
+        """ Sets up the object """
+
+        self.iface = iface
+        self.__name = "cool plugin"
+
+    def get_name(self) -> str:
+        """ Returns the name attribute of the object """
+        return self.__name
+
+    def set_name(self, new_name: str) -> bool:
+        """ Sets the name of the plugin """
+        if "not cool" in new_name:
+            print("Invalid name")
+            return False
+
+        else:
+            self.__name = new_name
+            return True
+
+
+```
+
+## Imports
+
+Rule of thumb: always use *relative imports* when importing from other modules inside your QGIS plugin.
+```{python, eval=FALSE}
+from pathlib import Path  # standard library, this is fine
+import numpy as np  # again, this is fine as the module exists elsewhere
+
+from .plugin import Plugin  # this is ok
+from ..test.conftest import new_project  # as is this
+
+
+from TestPlugin.plugin import Plugin  # this does NOT work in QGIS plugins!
+
+```

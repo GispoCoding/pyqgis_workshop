@@ -1,0 +1,63 @@
+---
+title: "PyQGIS Workshop - v2021.2 - Part 0"
+author: "Mikael Vaaltola - Gispo Ltd."
+date: "2021-02-21"
+output: html_document
+---
+
+# Before starting
+
+This document describes a few steps you should take first.
+
+## Prerequisites
+
+Before starting work on QGIS plugins, it's beneficial to have a few things installed.
+
+### Required
+
+You should install all of these on your own computer before starting QGIS plugin development.
+
+- QGIS 3.x, preferably the latest stable version.
+- Python 3.x. QGIS already ships with Python, but if you are on Windows it's good to have a system-wide install of Python as well.
+- An IDE/text editor to work with Python code. **Don't** use notepad, notepad++, or gedit!
+    - If unsure, Visual Studio Code is a free and decent choice to get started. Make sure to install the Python plugin for it.
+    - PyCharm is another good choice.
+
+#### Note to Windows users
+
+After installing QGIS and Python, make sure to include the QGIS Python libraries in your PythonPath.
+
+1. Open OSGeo4W Shell from the start menu, this should come with your QGIS installation.
+2. Type in `py3_env` and hit enter.
+3. Type in `python3` and hit enter.
+4. Type `import qgis` and hit enter.
+
+If this results in an error, your Python environment needs to be configured.
+
+- Read [this guide](https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/) first if you need help on setting up environment variables in Windows.
+- Check your QGIS installation directory, most likely something like `C:\Program Files\QGIS 3.16` but could vary based on your QGIS version and OS.
+- Go to edit your PYTHONPATH environment variable.
+- Add the following to the **end** of the current PYTHONPATH value, making sure to match your QGIS installation path:
+`;C:\Program Files\QGIS 3.16\apps\qgis\python`
+- Reboot for good measure,
+
+Follow steps 1-4 above again and verify there are no error messages after running the `import qgis` command.
+
+### Highly recommended
+
+These are highly useful tools to have.
+
+- Admin/sudo permissions so you can freely install software.
+- Qt Designer and Qt Linguist for UI design and translation.
+- Git for source code version control and jumping through the different tags within this repo.
+    - A GitHub or GitLab account, or an account to some other similar platform that ideally supports running tests and other automated processes.
+- A debugger. PyCharm has a really nice debugger, and Vs Code also supports Python debugging. It's useful if you already know at least some basics of how to set up and use the debugger in whichever IDE/editor you pick.
+
+### Useful
+
+These are often useful tools to have, but not strictly necessary.
+
+- Linux, or more specifically, dual-boot. Linux makes development less complicated, and having Windows available makes debugging potential OS-specific issues easier.
+- Docker to simplify running unit tests, hosting databases, and trying different versions of QGIS.
+- PostgreSQL and PostGIS, used by many QGIS plugins.
+- A Transifex account, if doing translations in Transifex.
