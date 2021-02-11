@@ -7,7 +7,7 @@
 
 ## Introduction
 
-See [here](docs/pyqgis-0_intro.html) for a brief introduction to PyQGIS plugin development.
+See [here](https://htmlpreview.github.io/?https://github.com/GispoCoding/pyqgis_workshop/blob/master/docs/pyqgis-0_intro.html) for a brief introduction to PyQGIS plugin development.
 
 ### Development
 

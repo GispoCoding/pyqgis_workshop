@@ -61,3 +61,6 @@ These are often useful tools to have, but not strictly necessary.
 - Docker to simplify running unit tests, hosting databases, and trying different versions of QGIS.
 - PostgreSQL and PostGIS, used by many QGIS plugins.
 - A Transifex account, if doing translations in Transifex.
+
+
+## [Next part](https://htmlpreview.github.io/?https://github.com/GispoCoding/pyqgis_workshop/blob/master/docs/pyqgis-1_python.html)
