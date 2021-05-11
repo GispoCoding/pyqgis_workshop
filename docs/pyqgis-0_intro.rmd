@@ -43,6 +43,21 @@ If this results in an error, your Python environment needs to be configured.
 
 Follow steps 1-4 above again and verify there are no error messages after running the `import qgis` command.
 
+#### Note to MacOS users
+
+Similarly to the Windows environment, the QGIS Python libraries need to be in your PythonPath.
+
+1. Open Terminal.
+2. Type in `python3` and hit enter.
+3. Type `import qgis` and hit enter.
+
+If this results in an error, your Python environment needs to be configured. QGIS for MacOS contains its own python interpreter, which you may use to ensure that all the correct python libraries are present.
+
+- *If you use pyenv*: you may use [this guide](https://gist.github.com/mkpaa/e8a5b349d02c6677e38d9ac505019312) to set pyenv to use the python interpreter contained in QGIS. Check that after activating the pyenv, `python --version` returns `Python 3.8.7`. If you get version 2, you have to add the python->python3 symlink inside QGIS: `ln -s /Applications/QGIS.app/Contents/MacOS/bin/python /Applications/QGIS.app/Contents/MacOS/bin/python3`. Recreate the pyenv after that. (Using pyenv is necessary if you are using an M1 processor Mac, as the system python binaries are for the ARM architecture and cannot import QGis libraries that are compiled for x86 processors. The QGIS internal python, or running some other x86 python emulated, is needed.)
+- Alternatively, set up your python to find qgis libraries by adding `export PYTHONPATH=/Applications/QGIS.app/Contents/Resources/python`. More instructions for running qgis libraries in external python are found in [PyQGIS Introduction](https://docs.qgis.org/3.16/en/docs/pyqgis_developer_cookbook/intro.html#running-custom-applications).
+
+Follow steps 1-3 above again and verify there are no error messages after running the `import qgis` command.
+
 ### Highly recommended
 
 These are highly useful tools to have.
